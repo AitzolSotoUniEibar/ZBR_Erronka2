@@ -1,0 +1,28 @@
+services:
+  web:
+    build:
+      context: ./web
+    volumes:
+      - ./irudiak:/var/www/html/irudiak
+      #- web_config:/etc/apache2/sites-available
+      - ./ssl-certs:/etc/CAWeb
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - db
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: ZBR@123.
+      MYSQL_DATABASE: BD_web
+      MYSQL_PASSWORD: ZBR@123.
+    volumes:
+      - ./db/init/bdweb.sql:/docker-entrypoint-initdb.d/bdweb.sql
+    ports:
+      - "3306:3306"
+
+# Declaración de volúmenes persistentes
+volumes:
+  db_data:
+  web_config:  ##Virtual host 
